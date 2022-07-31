@@ -106,5 +106,3 @@ function sumarCarrito() {
     cantCarrito++;
     carritoValor.innerHTML = '' + cantCarrito;
 }
-
-let a = "asdojsajdaojasdsad";
