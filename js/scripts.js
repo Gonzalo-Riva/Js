@@ -109,11 +109,11 @@ function cargarCatalogo() {
     agregarAlCatalogo(190, 'Guitarra Gibson Lespaul Studio Lt', 17000, 14);
     agregarAlCatalogo(1460, 'Guitarra Gibson Lespaul Standard', 23000, 9);
 
-    // Métodos de prueba :V
+    // Métodos de prueba 
     cantidadDeProductos ();
     precioTotalCatalogo();
 
-    //borrarDelCatalogo(1458); <-- Desactivado :V
+    //borrarDelCatalogo(1458); <-- Desactivado 
 
     rangoPrecio(20000, 50000);
 
@@ -191,3 +191,22 @@ function borrarDelCarrito(index) {
     localStorage.setItem("carrito", JSON.stringify(objetos));
     dibujarCarrito();
 }
+
+Swal.fire({
+    html: 'Por favor acepte los <b>terminos y condiciones</b> para continuar',
+    confirmButtoText: 'Acepto',
+    icon: 'info',
+    padding: '1rem',
+    backdrop: true,
+    toast: true,
+    position: 'bottom',
+    allowOutsideClick: false,
+    allowEscapeKey: false,
+    stopKeydownPropagation: false,
+    showConfirmButton: true,
+    showCancelButton: false,
+    showCloseButton: false,
+    closeButtonAriaLabel: 'Cerrar esta alerta',
+
+    
+  })
