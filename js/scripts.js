@@ -1,6 +1,6 @@
 let nombre = "Joseph";
 let apellido = "Maraiah";
-const catalogo = [];
+let catalogo = [];
 let cantCarrito = 0;
 const localStorage = window.localStorage
 let carritoValor = document.querySelector(".carritoValor");
@@ -104,10 +104,12 @@ function rangoPrecio(minimo, maximo) {
 }
 
 function cargarCatalogo() {
-    agregarAlCatalogo(1458, 'Guitarra Gibson Lespaul Special Edition II', 25000, 10);
-    agregarAlCatalogo(1440, 'Guitarra Gibson SG G-310', 18000,30);
-    agregarAlCatalogo(190, 'Guitarra Gibson Lespaul Studio Lt', 17000, 14);
-    agregarAlCatalogo(1460, 'Guitarra Gibson Lespaul Standard', 23000, 9);
+    fetch('./productos.json')
+    .then((response) => response.json())
+    .then(response=>{
+        catalogo=response;
+        dibujarCatalogo();
+    });
 
     // Métodos de prueba 
     cantidadDeProductos ();
@@ -117,7 +119,7 @@ function cargarCatalogo() {
 
     rangoPrecio(20000, 50000);
 
-    dibujarCatalogo();
+    
 }
 
 function dibujarCatalogo() {
@@ -207,6 +209,5 @@ Swal.fire({
     showCancelButton: false,
     showCloseButton: false,
     closeButtonAriaLabel: 'Cerrar esta alerta',
+})
 
-    
-  })
