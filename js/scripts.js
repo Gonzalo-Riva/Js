@@ -1,5 +1,5 @@
-let nombre = "Joseph";
-let apellido = "Maraiah";
+let nombre = "";
+let apellido = "";
 let catalogo = [];
 let cantCarrito = 0;
 const localStorage = window.localStorage
@@ -124,7 +124,7 @@ function cargarCatalogo() {
 
 function dibujarCatalogo() {
     contenedorProductos.innerHTML = "";
-
+   
 
     catalogo.forEach(struct => {
         contenedorProductos.innerHTML += `
@@ -165,31 +165,56 @@ function agregarAlCarrito(id) {
 }
 
 function dibujarCarrito() {
-    console.log(catalogo.length);
     const ids = JSON.parse(localStorage.getItem("carrito"));
     let modalContent = document.querySelector(".modal-carrito");
     modalContent.innerHTML = "";
     let total = 0;
     let index = 0;
-    ids.forEach((id) => {
+
+    let products = [];
+
+    ids.forEach(id => {
         const producto = catalogo[catalogo.findIndex((element) => element.id === id)];
+
+            // Busca en products si existe un ID repetido, en caso de que exista aumenta la cantidad en 1.
+            let obj = products.find((a, b) => {
+                if(a.id === producto.id) {
+                    products[b] = {"id": producto.id, "amount":(a.amount+1)};
+                    return true;
+                }
+            });
+
+            // Si Obj es undefined significa que no encontró ningún ID repetido en products, por lo que añade el primer producto.
+            if(obj === undefined) {
+                products.push({"id": producto.id, "amount":1});
+            }
+        
+            
+    });
+
+
+    products.forEach((product) => {
+        const producto = catalogo[catalogo.findIndex((element) => element.id === product.id)];
         modalContent.innerHTML += `<tr>
         <th>  <img class="card-img-top" src='assets/${producto.id}.jpg' onerror="this.onerror=null; this.src='https://dummyimage.com/450x300/dee2e6/6c757d.jpg'" alt="..." />
         </th>
         <td>${producto.producto}</td>
         <td>${producto.id}</td>
-        <td>${formatter.format(producto.precio)}</td>
-        <td>    <button type="button" class="btn btn-danger" onclick="borrarDelCarrito(${index})">X</button></td>
+        <td>${product.amount}</td>
+        <td>${formatter.format(producto.precio * product.amount)}</td>
+        <td>    <button type="button" class="btn btn-danger" onclick="borrarDelCarrito(${producto.id})">X</button></td>
       </tr>`;
-    total += producto.precio;
+    total += producto.precio * product.amount;
     index++;
     });
     document.querySelector(".precio-total").innerHTML = "" + formatter.format(total);
 }
 
-function borrarDelCarrito(index) {
+function borrarDelCarrito(id) {
     let objetos = JSON.parse(localStorage.getItem("carrito"));
-    objetos.splice(index, 1);
+    objetos = objetos.filter((e) => e !== id);
+    carritoValor.innerHTML = '' + objetos.length; 
+
     localStorage.setItem("carrito", JSON.stringify(objetos));
     dibujarCarrito();
 }
